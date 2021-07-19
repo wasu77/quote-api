@@ -5,3 +5,26 @@ Content-Type: application/json
 ### Fetch quote with given quoteId
 GET {{api-url}}/quotes/{{quoteId}}
 Content-Type: application/json
+
+### Add new quote
+POST {{api-url}}/quotes/
+Content-Type: application/json
+
+{
+  "text": "Wiem, że nic nie wiem",
+  "firstName": "Mądry",
+  "lastName": "Człowiek"
+}
+
+### Modify existing quote
+PATCH {{api-url}}/quotes/
+Content-Type: application/json
+
+{
+  "text": "Znowu w życiu mi nie wyszło",
+  "id": 1
+}
+
+### Remove quote
+DELETE {{api-url}}/quotes/{{quoteId}}
+Content-Type: application/json

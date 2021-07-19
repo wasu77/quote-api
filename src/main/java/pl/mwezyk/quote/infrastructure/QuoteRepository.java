@@ -8,8 +8,5 @@ import java.util.List;
 
 @Repository
 public interface QuoteRepository extends CrudRepository<Quote, Long> {
-
     List<Quote> findAll();
-    void deleteQuoteById(Long id);
-
 }

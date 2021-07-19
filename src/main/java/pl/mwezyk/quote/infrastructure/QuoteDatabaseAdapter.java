@@ -42,6 +42,6 @@ public class QuoteDatabaseAdapter implements QuoteDatabase {
 
     @Override
     public void removeQuote(Long quoteId) {
-        quoteRepository.deleteQuoteById(quoteId);
+        quoteRepository.deleteById(quoteId);
     }
 }
