@@ -1,6 +1,7 @@
 package pl.mwezyk.quote.infrastructure;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import pl.mwezyk.quote.domain.core.model.ModifiedQuote;
 import pl.mwezyk.quote.domain.core.model.Quote;
 import pl.mwezyk.quote.domain.core.model.QuoteIdentifier;
@@ -42,6 +43,10 @@ public class QuoteDatabaseAdapter implements QuoteDatabase {
 
     @Override
     public void removeQuote(Long quoteId) {
-        quoteRepository.deleteById(quoteId);
+        try {
+            quoteRepository.deleteById(quoteId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

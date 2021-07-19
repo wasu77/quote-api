@@ -46,8 +46,11 @@ public class QuoteCommandController {
         GetQuoteCommand command = GetQuoteCommand.builder()
                 .id(quoteId)
                 .build();
-
-        return ResponseEntity.ok(QuoteMapper.convertToQuoteDTO(getQuoteById.handle(command)));
+        try {
+            return ResponseEntity.ok(QuoteMapper.convertToQuoteDTO(getQuoteById.handle(command)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("")
@@ -67,8 +70,12 @@ public class QuoteCommandController {
                 .id(request.getId())
                 .text(request.getText())
                 .build();
-        modifyQuote.handle(command);
-        return ResponseEntity.ok().body("Quote successfully updated");
+        try {
+            modifyQuote.handle(command);
+            return ResponseEntity.ok().body("Quote successfully updated");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{quoteId}")
@@ -76,8 +83,13 @@ public class QuoteCommandController {
         RemoveQuoteCommand command = RemoveQuoteCommand.builder()
                 .id(quoteId)
                 .build();
-        removeQuote.handle(command);
-        return ResponseEntity.noContent().build();
+        try {
+            removeQuote.handle(command);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 

@@ -20,7 +20,8 @@ public class QuoteMapper {
         if (!StringUtils.hasText(quote.getFirstName()) && !StringUtils.hasText(quote.getLastName())) {
             return UNKNOWN;
         } else {
-            return quote.getFirstName() + SPACE + quote.getLastName();
+            String author = quote.getFirstName() + SPACE + quote.getLastName();
+            return StringUtils.trimWhitespace(author);
         }
     }
 }
