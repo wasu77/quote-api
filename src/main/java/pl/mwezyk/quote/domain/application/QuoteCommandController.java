@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mwezyk.quote.domain.application.model.AddQuoteRequest;
 import pl.mwezyk.quote.domain.application.model.ModifyQuoteRequest;
+import pl.mwezyk.quote.domain.application.model.QuoteDto;
+import pl.mwezyk.quote.domain.application.model.QuoteMapper;
 import pl.mwezyk.quote.domain.core.model.*;
 import pl.mwezyk.quote.domain.core.ports.incoming.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/quotes")
@@ -29,16 +32,22 @@ public class QuoteCommandController {
     private final GetQuoteById getQuoteById;
 
     @GetMapping("")
-    public ResponseEntity<List<Quote>> getAllQuotes() {
-        return ResponseEntity.ok(getAllQuotes.handle());
+    public ResponseEntity<List<QuoteDto>> getAllQuotes() {
+        List<QuoteDto> quotes = getAllQuotes.handle()
+                .stream()
+                .map(QuoteMapper::convertToQuoteDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(quotes);
     }
 
     @GetMapping("/{quoteId}")
-    public ResponseEntity<Quote> getQuoteById(@PathVariable Long quoteId) {
+    public ResponseEntity<QuoteDto> getQuoteById(@PathVariable Long quoteId) {
         GetQuoteCommand command = GetQuoteCommand.builder()
                 .id(quoteId)
                 .build();
-        return ResponseEntity.ok(getQuoteById.handle(command));
+
+        return ResponseEntity.ok(QuoteMapper.convertToQuoteDTO(getQuoteById.handle(command)));
     }
 
     @PostMapping("")

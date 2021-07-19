@@ -8,22 +8,22 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "quotes")
 @EqualsAndHashCode
+@Getter
 @NoArgsConstructor
 public class Quote {
 
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
     private Long id;
     @Column
     @Setter
     private String text;
-    @Column
+    @Column(name = "first_name")
     private String firstName;
-    @Column
+    @Column(name = "last_name")
     private String lastName;
 
     public Quote(String text, String firstName, String lastName) {

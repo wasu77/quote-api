@@ -1,0 +1,7 @@
+### Fetch all quotes
+GET {{api-url}}/quotes
+Content-Type: application/json
+
+### Fetch quote with given quoteId
+GET {{api-url}}/quotes/{{quoteId}}
+Content-Type: application/json
