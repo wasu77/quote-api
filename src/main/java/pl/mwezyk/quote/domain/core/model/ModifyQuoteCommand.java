@@ -6,7 +6,6 @@ import lombok.Value;
 @Value
 @Builder
 public class ModifyQuoteCommand {
-
     Long id;
     String text;
 }

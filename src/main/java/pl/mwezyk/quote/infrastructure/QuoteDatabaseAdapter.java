@@ -6,7 +6,6 @@ import pl.mwezyk.quote.domain.core.model.QuoteIdentifier;
 import pl.mwezyk.quote.domain.core.ports.outgoing.QuoteDatabase;
 
 import java.util.List;
-import java.util.Optional;
 
 public class QuoteDatabaseAdapter implements QuoteDatabase {
 

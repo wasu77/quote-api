@@ -6,7 +6,6 @@ import lombok.Value;
 @Value
 @Builder
 public class AddQuoteCommand {
-
     String text;
     String firstName;
     String lastName;
