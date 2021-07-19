@@ -1,6 +1,7 @@
 package pl.mwezyk.quote.domain.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuoteCommandController {
 
+    @Qualifier("AddNewQuote")
     private final AddNewQuote addNewQuote;
+    @Qualifier("ModifyQuote")
     private final ModifyQuote modifyQuote;
+    @Qualifier("GetAllQuotes")
     private final GetAllQuotes getAllQuotes;
+    @Qualifier("RemoveQuote")
     private final RemoveQuote removeQuote;
+    @Qualifier("GetQuoteById")
     private final GetQuoteById getQuoteById;
 
     @GetMapping("")

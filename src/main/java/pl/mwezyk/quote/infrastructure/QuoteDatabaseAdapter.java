@@ -1,5 +1,6 @@
 package pl.mwezyk.quote.infrastructure;
 
+import lombok.RequiredArgsConstructor;
 import pl.mwezyk.quote.domain.core.model.ModifiedQuote;
 import pl.mwezyk.quote.domain.core.model.Quote;
 import pl.mwezyk.quote.domain.core.model.QuoteIdentifier;
@@ -7,9 +8,10 @@ import pl.mwezyk.quote.domain.core.ports.outgoing.QuoteDatabase;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class QuoteDatabaseAdapter implements QuoteDatabase {
 
-    private QuoteRepository quoteRepository;
+    private final QuoteRepository quoteRepository;
 
     @Override
     public List<Quote> getAllQuotes() {
