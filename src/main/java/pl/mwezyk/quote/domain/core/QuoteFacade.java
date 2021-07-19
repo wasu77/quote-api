@@ -1,10 +1,13 @@
 package pl.mwezyk.quote.domain.core;
 
+import pl.mwezyk.quote.domain.application.model.QuoteDto;
+import pl.mwezyk.quote.domain.application.model.QuoteMapper;
 import pl.mwezyk.quote.domain.core.model.*;
 import pl.mwezyk.quote.domain.core.ports.incoming.*;
 import pl.mwezyk.quote.domain.core.ports.outgoing.QuoteDatabase;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuoteFacade implements AddNewQuote, ModifyQuote, RemoveQuote, GetAllQuotes, GetQuoteById {
 
@@ -15,13 +18,17 @@ public class QuoteFacade implements AddNewQuote, ModifyQuote, RemoveQuote, GetAl
     }
 
     @Override
-    public List<Quote> handle() {
-        return database.getAllQuotes();
+    public List<QuoteDto> handle() {
+        return database.getAllQuotes()
+                .stream()
+                .map(QuoteMapper::convertToQuoteDTO)
+                .collect(Collectors.toList());
+
     }
 
     @Override
-    public Quote handle(GetQuoteCommand getQuoteCommand) {
-        return database.getQuoteById(getQuoteCommand.getId());
+    public QuoteDto handle(GetQuoteCommand getQuoteCommand) {
+        return QuoteMapper.convertToQuoteDTO(database.getQuoteById(getQuoteCommand.getId()));
     }
 
     @Override

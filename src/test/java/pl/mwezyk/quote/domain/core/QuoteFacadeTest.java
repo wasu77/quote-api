@@ -1,6 +1,7 @@
 package pl.mwezyk.quote.domain.core;
 
 import org.junit.jupiter.api.*;
+import pl.mwezyk.quote.domain.application.model.QuoteDto;
 import pl.mwezyk.quote.domain.core.model.*;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class QuoteFacadeTest {
         commands.forEach(quoteFacade::handle);
 
         //when
-        List<Quote> quotes = quoteFacade.handle();
+        List<QuoteDto> quotes = quoteFacade.handle();
 
         //then
         Assertions.assertEquals(commands.size(), quotes.size());

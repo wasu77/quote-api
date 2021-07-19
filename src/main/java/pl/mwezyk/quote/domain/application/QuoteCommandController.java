@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import pl.mwezyk.quote.domain.application.model.AddQuoteRequest;
 import pl.mwezyk.quote.domain.application.model.ModifyQuoteRequest;
 import pl.mwezyk.quote.domain.application.model.QuoteDto;
-import pl.mwezyk.quote.domain.application.model.QuoteMapper;
 import pl.mwezyk.quote.domain.core.model.*;
 import pl.mwezyk.quote.domain.core.ports.incoming.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/quotes")
@@ -33,12 +31,7 @@ public class QuoteCommandController {
 
     @GetMapping("")
     public ResponseEntity<List<QuoteDto>> getAllQuotes() {
-        List<QuoteDto> quotes = getAllQuotes.handle()
-                .stream()
-                .map(QuoteMapper::convertToQuoteDTO)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(quotes);
+        return ResponseEntity.ok(getAllQuotes.handle());
     }
 
     @GetMapping("/{quoteId}")
@@ -47,7 +40,7 @@ public class QuoteCommandController {
                 .id(quoteId)
                 .build();
         try {
-            return ResponseEntity.ok(QuoteMapper.convertToQuoteDTO(getQuoteById.handle(command)));
+            return ResponseEntity.ok(getQuoteById.handle(command));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
