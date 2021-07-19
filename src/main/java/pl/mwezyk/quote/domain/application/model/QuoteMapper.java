@@ -5,8 +5,8 @@ import pl.mwezyk.quote.domain.core.model.Quote;
 
 public class QuoteMapper {
 
-    private static final String UNKNOWN = "Unknown";
-    private static final String SPACE = " ";
+    protected static final String UNKNOWN = "Unknown";
+    protected static final String SPACE = " ";
 
     public static QuoteDto convertToQuoteDTO(Quote quote) {
         return QuoteDto.builder()
