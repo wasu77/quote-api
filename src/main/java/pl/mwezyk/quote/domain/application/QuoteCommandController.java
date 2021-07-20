@@ -1,5 +1,7 @@
 package pl.mwezyk.quote.domain.application;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/quotes")
 @RequiredArgsConstructor
+@Api
 public class QuoteCommandController {
 
     @Qualifier("AddNewQuote")
@@ -30,11 +33,13 @@ public class QuoteCommandController {
     private final GetQuoteById getQuoteById;
 
     @GetMapping("")
+    @ApiOperation(value = "Get list of all quotes")
     public ResponseEntity<List<QuoteDto>> getAllQuotes() {
         return ResponseEntity.ok(getAllQuotes.handle());
     }
 
     @GetMapping("/{quoteId}")
+    @ApiOperation(value = "Get quote with given id")
     public ResponseEntity<QuoteDto> getQuoteById(@PathVariable Long quoteId) {
         GetQuoteCommand command = GetQuoteCommand.builder()
                 .id(quoteId)
@@ -47,6 +52,7 @@ public class QuoteCommandController {
     }
 
     @PostMapping("")
+    @ApiOperation(value = "Add new quote")
     public ResponseEntity<QuoteIdentifier> addNewQuote(@RequestBody AddQuoteRequest request) {
         AddQuoteCommand command = AddQuoteCommand.builder()
                 .text(request.getText())
@@ -58,6 +64,7 @@ public class QuoteCommandController {
     }
 
     @PatchMapping("")
+    @ApiOperation(value = "Modify existing quote")
     public ResponseEntity<String> modifyQuote(@RequestBody ModifyQuoteRequest request) {
         ModifyQuoteCommand command = ModifyQuoteCommand.builder()
                 .id(request.getId())
@@ -72,6 +79,7 @@ public class QuoteCommandController {
     }
 
     @DeleteMapping("/{quoteId}")
+    @ApiOperation(value = "Remove existing quote")
     public ResponseEntity<Void> deleteQuote(@PathVariable Long quoteId) {
         RemoveQuoteCommand command = RemoveQuoteCommand.builder()
                 .id(quoteId)

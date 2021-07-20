@@ -8,6 +8,10 @@ From command line:
 mvn spring-boot:run
 
 2. Endpoints description
+There is a Swagger API Doc prepared: 
+   http://localhost:8080/swagger-ui.html
+Sample HTTP calls are placed in:
+   quotes.http
 
 ### Get all quotes from database
 GET 
