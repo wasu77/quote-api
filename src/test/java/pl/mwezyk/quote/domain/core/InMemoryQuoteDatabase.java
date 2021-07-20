@@ -7,9 +7,9 @@ import pl.mwezyk.quote.domain.core.ports.outgoing.QuoteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class InMemoryQuoteDatabase implements QuoteDatabase {
 
@@ -22,7 +22,8 @@ public class InMemoryQuoteDatabase implements QuoteDatabase {
 
     @Override
     public Quote getQuoteById(Long quoteId) {
-        return allQuotes.get(quoteId);
+        return Optional.ofNullable(allQuotes.get(quoteId))
+                .orElseThrow(() -> new IllegalArgumentException("Not able to get quote with provided id: " + quoteId));
     }
 
     @Override

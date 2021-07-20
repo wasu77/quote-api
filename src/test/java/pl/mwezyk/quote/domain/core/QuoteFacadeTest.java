@@ -62,7 +62,8 @@ public class QuoteFacadeTest {
         quoteFacade.handle(removeCommand);
 
         //then
-        Assertions.assertNull(quoteDatabase.getQuoteById(identifier.getId()));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> quoteDatabase.getQuoteById(identifier.getId()));
     }
 
     @Test
@@ -102,7 +103,28 @@ public class QuoteFacadeTest {
         //then
         Assertions.assertEquals(commands.size(), quotes.size());
         Assertions.assertEquals(commands.size(), quoteDatabase.getAllQuotes().size());
+    }
 
+    @Test
+    @DisplayName("Get quotes list when database is empty")
+    void assertListIsEmptyWhenNoQuotesInDatabaseTest() {
+        //when
+        List<QuoteDto> quotes = quoteFacade.handle();
+        //then
+        Assertions.assertEquals(0, quotes.size());
+    }
+
+    @Test
+    @DisplayName("Get not existing quote")
+    void assertExceptionIsThrownWhenQuoteWithGivenIdDoesNotExistInDatabase() {
+        //given
+        GetQuoteCommand command = GetQuoteCommand.builder()
+                .id(999L)
+                .build();
+
+        //when//then
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> quoteFacade.handle(command));
     }
 
     private List<AddQuoteCommand> provideMultipleAddQuoteCommands() {
