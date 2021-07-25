@@ -1,10 +1,12 @@
 package pl.mwezyk.app.domain.quote.core;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import pl.mwezyk.app.domain.quote.application.model.QuoteDto;
 import pl.mwezyk.app.domain.quote.core.model.*;
-import pl.mwezyk.app.domain.quote.domain.core.model.*;
-import pl.mwezyk.app.quote.domain.quote.core.model.*;
+import pl.mwezyk.app.domain.quote.core.ports.outgoing.QuoteToFileWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +16,13 @@ public class QuoteFacadeTest {
 
     private QuoteFacade quoteFacade;
     private InMemoryQuoteDatabase quoteDatabase;
+    private QuoteToFileWriter toFileWriter;
 
     @BeforeEach
     void init() {
         quoteDatabase = new InMemoryQuoteDatabase();
-        quoteFacade = new QuoteFacade(quoteDatabase);
+        toFileWriter = new QuoteToFileWriter();
+        quoteFacade = new QuoteFacade(quoteDatabase, toFileWriter);
     }
 
     private static final String TEST_QUOTE_TEXT = "TEST_QUOTE_TEXT";

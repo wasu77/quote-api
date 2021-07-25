@@ -4,11 +4,8 @@ import pl.mwezyk.app.domain.quote.application.model.QuoteDto;
 import pl.mwezyk.app.domain.quote.application.model.QuoteMapper;
 import pl.mwezyk.app.domain.quote.core.model.*;
 import pl.mwezyk.app.domain.quote.core.ports.incoming.*;
-import pl.mwezyk.app.domain.quote.domain.core.model.*;
-import pl.mwezyk.app.domain.quote.domain.core.ports.incoming.*;
-import pl.mwezyk.app.quote.domain.quote.core.model.*;
-import pl.mwezyk.app.quote.domain.quote.core.ports.incoming.*;
 import pl.mwezyk.app.domain.quote.core.ports.outgoing.QuoteDatabase;
+import pl.mwezyk.app.domain.quote.core.ports.outgoing.QuoteToFileWriter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,9 +13,11 @@ import java.util.stream.Collectors;
 public class QuoteFacade implements AddNewQuote, ModifyQuote, RemoveQuote, GetAllQuotes, GetQuoteById {
 
     private final QuoteDatabase database;
+    private final QuoteToFileWriter toFileWriter;
 
-    public QuoteFacade(QuoteDatabase database) {
+    public QuoteFacade(QuoteDatabase database, QuoteToFileWriter toFileWriter) {
         this.database = database;
+        this.toFileWriter = toFileWriter;
     }
 
     @Override
@@ -27,7 +26,6 @@ public class QuoteFacade implements AddNewQuote, ModifyQuote, RemoveQuote, GetAl
                 .stream()
                 .map(QuoteMapper::convertToQuoteDTO)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -40,6 +38,7 @@ public class QuoteFacade implements AddNewQuote, ModifyQuote, RemoveQuote, GetAl
         Quote quote = new Quote(addQuoteCommand.getText(),
                 addQuoteCommand.getFirstName(),
                 addQuoteCommand.getLastName());
+        toFileWriter.writeToFile(quote);
         return database.save(quote);
     }
 

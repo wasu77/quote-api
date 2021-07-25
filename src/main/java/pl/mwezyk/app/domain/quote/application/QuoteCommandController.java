@@ -3,19 +3,14 @@ package pl.mwezyk.app.domain.quote.application;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mwezyk.app.domain.quote.application.model.AddQuoteRequest;
 import pl.mwezyk.app.domain.quote.application.model.ModifyQuoteRequest;
 import pl.mwezyk.app.domain.quote.application.model.QuoteDto;
+import pl.mwezyk.app.domain.quote.core.QuoteFacade;
 import pl.mwezyk.app.domain.quote.core.model.*;
-import pl.mwezyk.app.domain.quote.core.ports.incoming.*;
-import pl.mwezyk.app.domain.quote.domain.core.model.*;
-import pl.mwezyk.app.domain.quote.domain.core.ports.incoming.*;
-import pl.mwezyk.app.quote.domain.quote.core.model.*;
-import pl.mwezyk.app.quote.domain.quote.core.ports.incoming.*;
 
 import java.util.List;
 
@@ -25,21 +20,12 @@ import java.util.List;
 @Api
 public class QuoteCommandController {
 
-    @Qualifier("AddNewQuote")
-    private final AddNewQuote addNewQuote;
-    @Qualifier("ModifyQuote")
-    private final ModifyQuote modifyQuote;
-    @Qualifier("GetAllQuotes")
-    private final GetAllQuotes getAllQuotes;
-    @Qualifier("RemoveQuote")
-    private final RemoveQuote removeQuote;
-    @Qualifier("GetQuoteById")
-    private final GetQuoteById getQuoteById;
+    private final QuoteFacade quoteFacade;
 
     @GetMapping("")
     @ApiOperation(value = "Get list of all quotes")
     public ResponseEntity<List<QuoteDto>> getAllQuotes() {
-        return ResponseEntity.ok(getAllQuotes.handle());
+        return ResponseEntity.ok(quoteFacade.handle());
     }
 
     @GetMapping("/{quoteId}")
@@ -49,7 +35,7 @@ public class QuoteCommandController {
                 .id(quoteId)
                 .build();
         try {
-            return ResponseEntity.ok(getQuoteById.handle(command));
+            return ResponseEntity.ok(quoteFacade.handle(command));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
@@ -63,7 +49,7 @@ public class QuoteCommandController {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .build();
-        QuoteIdentifier identifier = addNewQuote.handle(command);
+        QuoteIdentifier identifier = quoteFacade.handle(command);
         return new ResponseEntity<>(identifier, HttpStatus.CREATED);
     }
 
@@ -75,7 +61,7 @@ public class QuoteCommandController {
                 .text(request.getText())
                 .build();
         try {
-            modifyQuote.handle(command);
+            quoteFacade.handle(command);
             return ResponseEntity.ok().body("Quote successfully updated");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -89,7 +75,7 @@ public class QuoteCommandController {
                 .id(quoteId)
                 .build();
         try {
-            removeQuote.handle(command);
+            quoteFacade.handle(command);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
