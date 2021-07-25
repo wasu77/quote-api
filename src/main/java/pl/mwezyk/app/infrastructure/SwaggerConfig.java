@@ -1,4 +1,4 @@
-package pl.mwezyk.app.domain.quote.infrastructure;
+package pl.mwezyk.app.infrastructure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
